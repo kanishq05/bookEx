@@ -1,0 +1,77 @@
+.table-container {
+  max-width: 100%;
+  margin: 2rem 0;
+  background: var(--bg-surface);
+  padding: 1.5rem;
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+}
+
+.professional-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Poppins', sans-serif;
+  min-width: 560px;
+}
+
+.professional-table th,
+.professional-table td {
+  border: 1px solid var(--border-color);
+  padding: .85rem 1rem;
+  text-align: center;
+  vertical-align: middle;
+  transition: all .2s ease;
+}
+
+.professional-table th {
+  font-weight: 600;
+  color: #fff;
+}
+
+.professional-table .table-title-row th {
+  background: linear-gradient(135deg, #1a3a52 0%, #2c5aa0 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1.1rem;
+}
+
+.professional-table thead tr:nth-child(2) th {
+  background: linear-gradient(135deg, #2c5aa0 0%, #1a3a52 100%);
+  color: #fff;
+  font-size: .85rem;
+}
+
+.professional-table tbody tr {
+  transition: all .25s ease;
+}
+
+.professional-table tbody tr:hover {
+  background-color: var(--bg-surface-2);
+}
+
+.professional-table tbody tr:nth-child(odd) {
+  background: var(--bg-surface);
+}
+
+.professional-table tbody tr:nth-child(even) {
+  background: var(--bg-surface-2);
+}
+
+.professional-table tbody td {
+  color: var(--text-primary);
+  font-size: .9rem;
+}
+
+.professional-table tbody td a {
+  color: var(--brand-mid);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color .2s;
+}
+
+.professional-table tbody td a:hover {
+  color: var(--brand-gold);
+}

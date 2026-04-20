@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+   {% for item in item_list %}
+      <li>
+        <a href="{{ item.link }}">  {{ item.item }} </a>
+      </li>
+   {% endfor %}
+{% endblock sidenav %}
+
+{% block content %}
+   <div style="text-align: center; margin-top: 50px;">
+       <h1 style="color: #4CAF50;">Thank you for shopping!</h1>
+       <p style="font-size: 1.2em; color: #555;">Your order has been successfully processed.</p>
+       <br>
+       <a href="/displaybooks" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Continue Browsing</a>
+   </div>
+{% endblock content %}

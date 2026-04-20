@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+<li class="nav-item">
+  <a class="nav-link sidebar-link" href="/"><i class="fas fa-home"></i> Home</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link sidebar-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+</li>
+{% endblock sidenav %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-5 text-center">
+    <div class="success-icon-wrap mb-4">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h1 class="auth-heading">Registration Successful!</h1>
+    <p class="auth-sub mt-2 mb-4">
+      Your BookEx account is ready. Sign in to start browsing and trading books.
+    </p>
+    <a href="{% url 'login' %}?next=/" class="btn btn-primary btn-lg px-5">
+      <i class="fas fa-sign-in-alt me-1"></i> Sign In Now
+    </a>
+    <p class="mt-3">
+      <a href="/" class="text-secondary text-decoration-none">
+        <i class="fas fa-home me-1"></i> Back to Home
+      </a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .success-icon-wrap {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 8px 24px rgba(39, 174, 96, .3);
+    animation: popIn .5s cubic-bezier(.175, .885, .32, 1.275) both;
+  }
+
+  .success-icon-wrap i {
+    font-size: 2.8rem;
+    color: #fff;
+  }
+
+  @keyframes popIn {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .auth-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    color: var(--text-primary);
+  }
+
+  .auth-sub {
+    color: var(--text-secondary);
+    font-size: .97rem;
+  }
+</style>
+{% endblock content %}

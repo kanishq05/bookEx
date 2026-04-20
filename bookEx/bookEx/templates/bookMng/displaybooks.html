@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}{% include "bookMng/_sidenav.html" %}{% endblock sidenav %}
+
+{% block content %}
+<h1><i class="fas fa-book"></i> Browse Books</h1>
+
+{% if books %}
+<div class="table-container">
+  <table class="professional-table">
+    <thead>
+      <tr class="table-title-row">
+        <th colspan="{% if user.is_authenticated %}6{% else %}5{% endif %}">
+          <i class="fas fa-book-open me-2"></i>Book Catalog
+        </th>
+      </tr>
+      <tr>
+        <th><i class="fas fa-heading fa-sm me-1"></i> Title</th>
+        <th><i class="fas fa-dollar-sign fa-sm me-1"></i> Price</th>
+        <th><i class="fas fa-user fa-sm me-1"></i> Seller</th>
+        <th><i class="fas fa-calendar fa-sm me-1"></i> Posted</th>
+        <th><i class="fas fa-star fa-sm me-1"></i> Rating</th>
+        {% if user.is_authenticated %}
+        <th><i class="fas fa-shopping-cart fa-sm me-1"></i> Action</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td><a href="book_detail/{{ book.id }}"><strong>{{ book.name }}</strong></a></td>
+        <td><span class="price-badge">${{ book.price }}</span></td>
+        <td>{{ book.username }}</td>
+        <td>{{ book.publishdate|date:"M d, Y" }}</td>
+        <td>
+          {% if book.avg_rating %}
+          <span class="rating-stars">
+            <i class="fas fa-star"></i> {{ book.avg_rating|floatformat:1 }}
+          </span>
+          {% else %}
+          <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+        {% if user.is_authenticated %}
+        <td>
+          <button class="btn-cart" onclick="addToCart('{{ book.id }}', '{{ book.name|escapejs }}', '{{ book.price }}')">
+            <i class="fas fa-cart-plus"></i> Add
+          </button>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state-box">
+  <i class="fas fa-book-open empty-icon"></i>
+  <h4>No books listed yet</h4>
+  <p>Be the first to post a book!</p>
+  {% if user.is_authenticated %}
+  <a href="/postbook" class="btn btn-primary mt-2"><i class="fas fa-plus me-1"></i> Post a Book</a>
+  {% endif %}
+</div>
+{% endif %}
+
+<style>
+  .empty-state-box {
+    background: var(--bg-surface);
+    border: 2px dashed var(--border-color);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+
+  .empty-icon {
+    font-size: 3.5rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .price-badge {
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+    color: #fff;
+    padding: .25rem .7rem;
+    border-radius: 20px;
+    font-size: .82rem;
+    font-weight: 600;
+  }
+
+  .rating-stars {
+    color: #f39c12;
+    font-weight: 600;
+    font-size: .9rem;
+  }
+
+  .btn-cart {
+    background: linear-gradient(135deg, #1a3a52, #2c5aa0);
+    color: #fff;
+    border: none;
+    padding: .4rem .9rem;
+    border-radius: 7px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .25s ease;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .btn-cart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 58, 82, .35);
+  }
+</style>
+{% endblock content %}

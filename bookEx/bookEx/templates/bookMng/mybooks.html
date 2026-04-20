@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}{% include "bookMng/_sidenav.html" %}{% endblock sidenav %}
+
+{% block content %}
+<h1><i class="fas fa-book-bookmark"></i> My Books</h1>
+
+{% if books %}
+<div class="table-container">
+   <table class="professional-table">
+      <thead>
+         <tr class="table-title-row">
+            <th colspan="{% if user.is_authenticated %}5{% else %}3{% endif %}">
+               <i class="fas fa-book-bookmark me-2"></i>My Listed Books
+            </th>
+         </tr>
+         <tr>
+            <th><i class="fas fa-heading fa-sm me-1"></i> Title</th>
+            <th><i class="fas fa-dollar-sign fa-sm me-1"></i> Price</th>
+            <th><i class="fas fa-calendar fa-sm me-1"></i> Posted</th>
+            {% if user.is_authenticated %}
+            <th><i class="fas fa-shopping-cart fa-sm me-1"></i> Cart</th>
+            <th><i class="fas fa-trash fa-sm me-1"></i> Delete</th>
+            {% endif %}
+         </tr>
+      </thead>
+      <tbody>
+         {% for book in books %}
+         <tr>
+            <td><a href="book_detail/{{ book.id }}"><strong>{{ book.name }}</strong></a></td>
+            <td><span class="price-badge">${{ book.price }}</span></td>
+            <td>{{ book.publishdate|date:"M d, Y" }}</td>
+            {% if user.is_authenticated %}
+            <td>
+               <button class="btn-cart"
+                  onclick="addToCart('{{ book.id }}', '{{ book.name|escapejs }}', '{{ book.price }}')">
+                  <i class="fas fa-cart-plus"></i> Add
+               </button>
+            </td>
+            <td>
+               <a href="book_delete/{{ book.id }}" class="btn-delete"
+                  onclick="return confirm('Delete \'{{ book.name|escapejs }}\'? This cannot be undone.')">
+                  <i class="fas fa-trash"></i> Delete
+               </a>
+            </td>
+            {% endif %}
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+</div>
+{% else %}
+<div class="empty-state-box">
+   <i class="fas fa-book-open empty-icon"></i>
+   <h4>You haven't posted any books yet</h4>
+   <p>List your first book and start selling!</p>
+   <a href="/postbook" class="btn btn-primary mt-3">
+      <i class="fas fa-plus me-1"></i> Post a Book
+   </a>
+</div>
+{% endif %}
+
+<style>
+   .empty-state-box {
+      background: var(--bg-surface);
+      border: 2px dashed var(--border-color);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-secondary);
+   }
+
+   .empty-icon {
+      font-size: 3.5rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      display: block;
+   }
+
+   .price-badge {
+      background: linear-gradient(135deg, #27ae60, #1e8449);
+      color: #fff;
+      padding: .25rem .7rem;
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 600;
+   }
+
+   .btn-cart {
+      background: linear-gradient(135deg, #1a3a52, #2c5aa0);
+      color: #fff;
+      border: none;
+      padding: .4rem .9rem;
+      border-radius: 7px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .25s ease;
+      font-family: 'Poppins', sans-serif;
+   }
+
+   .btn-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 58, 82, .35);
+   }
+
+   .btn-delete {
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      color: #fff;
+      text-decoration: none;
+      padding: .4rem .9rem;
+      border-radius: 7px;
+      font-size: .82rem;
+      font-weight: 600;
+      display: inline-block;
+      transition: all .25s ease;
+   }
+
+   .btn-delete:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(231, 76, 60, .35);
+      color: #fff;
+   }
+</style>
+{% endblock content %}

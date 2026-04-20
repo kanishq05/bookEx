@@ -1,0 +1,24 @@
+{% for item in item_list %}
+<li class="nav-item">
+    <a class="nav-link sidebar-link" href="{{ item.link }}">
+        {% if item.link == "/" %}
+        <i class="fas fa-home"></i>
+        {% elif item.link == "/postbook" %}
+        <i class="fas fa-plus-circle"></i>
+        {% elif item.link == "/displaybooks" %}
+        <i class="fas fa-book"></i>
+        {% elif "aboutus" in item.link %}
+        <i class="fas fa-info-circle"></i>
+        {% elif "searchbooks" in item.link %}
+        <i class="fas fa-search"></i>
+        {% elif item.link == "/mybooks" %}
+        <i class="fas fa-book-bookmark"></i>
+        {% elif "inbox" in item.link %}
+        <i class="fas fa-envelope"></i>
+        {% else %}
+        <i class="fas fa-link"></i>
+        {% endif %}
+        {{ item.item }}
+    </a>
+</li>
+{% endfor %}

@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+<li class="nav-item">
+  <a class="nav-link sidebar-link" href="/"><i class="fas fa-home"></i> Home</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link sidebar-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+</li>
+{% endblock sidenav %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+
+    <!-- Page heading -->
+    <div class="text-center mb-4">
+      <div class="auth-icon-wrap">
+        <i class="fas fa-user-plus auth-logo-icon"></i>
+      </div>
+      <h1 class="auth-heading">Create Account</h1>
+      <p class="auth-sub">Join BookEx and start trading books today</p>
+    </div>
+
+    <div class="card auth-card">
+      <div class="card-body">
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger d-flex align-items-start gap-2 py-2" role="alert">
+          <i class="fas fa-exclamation-circle flex-shrink-0 mt-1"></i>
+          <div>
+            {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <form action="" method="post" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}" />
+
+          {% for field in form %}
+          <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">
+              {% if field.name == "username" %}
+              <i class="fas fa-user text-muted me-1"></i>
+              {% elif "password" in field.name %}
+              <i class="fas fa-lock text-muted me-1"></i>
+              {% else %}
+              <i class="fas fa-tag text-muted me-1"></i>
+              {% endif %}
+              {{ field.label }}
+            </label>
+
+            {% if "password" in field.name %}
+            <div class="input-password-wrap">
+              <input type="password" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
+                class="form-control {% if field.errors %}is-invalid{% endif %}" placeholder="{{ field.label }}"
+                autocomplete="{% if field.name == 'password1' %}new-password{% else %}new-password{% endif %}">
+              <button type="button" class="toggle-pw-btn" onclick="togglePassword('{{ field.id_for_label }}', this)"
+                tabindex="-1">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            {% else %}
+            <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
+              value="{{ field.value|default:'' }}" class="form-control {% if field.errors %}is-invalid{% endif %}"
+              placeholder="{{ field.label }}" {% if forloop.first %}autofocus{% endif %} autocomplete="username">
+            {% endif %}
+
+            {% if field.errors %}
+            <div class="invalid-feedback d-block">
+              {% for error in field.errors %}
+              <div><i class="fas fa-exclamation-triangle me-1"></i>{{ error }}</div>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if field.help_text %}
+            <div class="form-text text-muted small mt-1">
+              <i class="fas fa-info-circle me-1"></i>{{ field.help_text }}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+
+          <button type="submit" class="btn btn-primary w-100 btn-auth mt-2">
+            <i class="fas fa-user-plus me-1"></i> Create Account
+          </button>
+        </form>
+
+        <div class="auth-divider"><span>or</span></div>
+
+        <p class="text-center mb-0 auth-switch">
+          Already have an account?
+          <a href="{% url 'login' %}" class="fw-bold">Sign in</a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .auth-icon-wrap {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #1a3a52, #2c5aa0);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 6px 20px rgba(26, 58, 82, .3);
+  }
+
+  .auth-logo-icon {
+    font-size: 2rem;
+    color: #fff;
+  }
+
+  .auth-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text-primary);
+  }
+
+  .auth-sub {
+    color: var(--text-secondary);
+    font-size: .95rem;
+  }
+
+  .auth-card {
+    border-radius: 18px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .12) !important;
+  }
+
+  .input-password-wrap {
+    position: relative;
+  }
+
+  .toggle-pw-btn {
+    position: absolute;
+    right: .75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0;
+    font-size: .95rem;
+    transition: color .2s;
+  }
+
+  .toggle-pw-btn:hover {
+    color: var(--brand-mid);
+  }
+
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: .82rem;
+    font-weight: 500;
+  }
+
+  .form-text {
+    font-size: .8rem;
+  }
+
+  .btn-auth {
+    padding: .7rem !important;
+    font-size: 1rem !important;
+    letter-spacing: .3px;
+  }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin: 1.5rem 0;
+    color: var(--text-muted);
+    font-size: .85rem;
+  }
+
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+  }
+
+  .auth-switch {
+    font-size: .92rem;
+    color: var(--text-secondary);
+  }
+
+  .auth-switch a {
+    color: #2c5aa0;
+    text-decoration: none;
+  }
+
+  .auth-switch a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  function togglePassword(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    const icon = btn.querySelector('i');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+      input.type = 'password';
+      icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+  }
+</script>
+{% endblock content %}
